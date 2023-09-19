@@ -89,4 +89,9 @@ for i in range(epochs):
         plt.show()
 
 
+plt.plot(range(len(record_loss_train)),record_loss_train,label="Train")
+plt.legend()
 
+plt.xlabel("Epochs")
+plt.ylabel("Error")
+plt.show()
