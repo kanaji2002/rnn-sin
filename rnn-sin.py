@@ -4,28 +4,9 @@ import torch
 import matplotlib.pyplot as plt
 from torch.utils.data import TensorDataset, DataLoader
 from torch import optim
-  
-
-class Net(nn.Module):
-    def __init__(self):
-        super().__init__()
-        ...
-        self.RNN(
-            input_size=1,
-            hidden_size=64,
-            batch_first=True,
-        )
-        ...
-        
-    def forward(self, x):
-        ...
-
-        y_rnn, h=self.rnn(x,None)
-        ...
-        return y
 
 sin_x=torch.linspace(-2*math.pi, 2*math.pi, 100)
-sin_y=torch.sin(sin_x)
+sin_y=torch.sin(sin_x)+0.1*torch.randn(len(sin_x))
 plt.plot(sin_x, sin_y)
 plt.show()
 
@@ -41,7 +22,9 @@ for i in range(n_sample):
 dataset=TensorDataset(input_data, correct_data)
 train_loader=DataLoader(dataset,batch_size=8,shuffle=True)
 
-class net(nn.Module):
+
+
+class Net(nn.Module):
     def __init__(self):
         super().__init__()
         self.rnn=nn.RNN(
@@ -50,8 +33,10 @@ class net(nn.Module):
             batch_first=True,
         )
         self.fc=nn.Linear(64,1)
-        
+
+
     def forward(self, x):
+        
         y_rnn, h=self.rnn(x,None)
         y=self.fc(y_rnn[:,-1,:])
         return y
@@ -76,7 +61,7 @@ for i in range(epochs):
         #ミニバッチ(x,t)を取り出す
         y=net(x)
         loss=loss_fnc(y,t)
-        loss_train+=loss.item()
+        loss_train += loss.item()
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -94,6 +79,7 @@ for i in range(epochs):
         for i in range(n_sample):
             x=torch.tensor(predicted[-n_time:])
 #直近の時系列を取り出す
+            x=x.view(1, n_time,1)
             y=net(x)
             predicted.append(y[0].item())
 #予測結果をpredictedに追加する
