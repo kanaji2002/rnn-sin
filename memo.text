@@ -1,0 +1,17 @@
+class Net(nn.Module):
+    def __init__(self):
+        super().__init__()
+        ...
+        self.RNN(
+            input_size=1,
+            hidden_size=64,
+            batch_first=True,
+        )
+        ...
+        
+    def forward(self, x):
+        ...
+
+        y_rnn, h=self.rnn(x,None)
+        ...
+        return y
